@@ -9,7 +9,6 @@ display_size = (800, 600)
 text_caption = 'Broke Back'
 
 
-
 color_background = (30, 30, 30)
 color_obj = (222, 222, 222)
 
@@ -20,5 +19,4 @@ def unit(num):
 # pygame var
 surface_icon = pygame.image.load( os.path.join(dir_res, name_icon) )
 
-# control_p1 = {left:, right:, up:, down:, kit:}
-control_p2 = {}
+control_p1 = { 'left':pygame.K_a, 'right':pygame.K_d, 'up':pygame.K_w, 'down':pygame.K_s, 'kit':pygame.K_LSHIFT}

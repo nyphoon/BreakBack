@@ -17,6 +17,7 @@ class Arrow (object):
 
 		return ( ( self.position[0]+self.direction[0]*self.size[0]/2, self.position[1]+self.direction[1]*self.size[1]/2 ),
 			( self.position[0]+(dirction_vert[0]-self.direction[0])*self.size[0]/2, self.position[1]+(dirction_vert[1]-self.direction[1])*self.size[1]/2 ),
+			( self.position[0]-self.direction[0]*self.size[0]/2, self.position[1]-self.direction[1]*self.size[1]/2 ),
 			( self.position[0]+(-dirction_vert[0]-self.direction[0])*self.size[0]/2, self.position[1]+(-dirction_vert[1]-self.direction[1])*self.size[1]/2 ) )
 
 	def progress(self):

@@ -1,21 +1,45 @@
 import pygame
 import res
+import cal
 from arrow import Arrow
 
 pygame.init()
 
-gameDisplay = pygame.display.set_mode( res.display_size )
+gameDisplay = pygame.display.set_mode( res.size_display )
 pygame.display.set_caption( res.text_caption )
 pygame.display.set_icon( res.surface_icon )
 clock = pygame.time.Clock()
 
-arrow = Arrow((100,100), (50,50), (1,0), 1, res.color_obj)
+arrow_p1 = Arrow(res.size_grid, (50,50), (1,0), 3, res.color_p1)
+arrow_p2 = Arrow(res.size_grid, (50,50), (0,1), 1, res.color_p2)
 
-key_control = { res.control_p1['right']:lambda :arrow.set_direction((1,0)),
-				res.control_p1['left']:	lambda :arrow.set_direction((-1,0)),
-				res.control_p1['up']:	lambda :arrow.set_direction((0,-1)),
-				res.control_p1['down']:	lambda :arrow.set_direction((0,1))
+# register key done event
+key_control = { res.control_p1['right']:lambda :arrow_p1.set_direction((1,0)),
+				res.control_p1['left']:	lambda :arrow_p1.set_direction((-1,0)),
+				res.control_p1['up']:	lambda :arrow_p1.set_direction((0,-1)),
+				res.control_p1['down']:	lambda :arrow_p1.set_direction((0,1)),
+				res.control_p2['right']:lambda :arrow_p2.set_direction((1,0)),
+				res.control_p2['left']:	lambda :arrow_p2.set_direction((-1,0)),
+				res.control_p2['up']:	lambda :arrow_p2.set_direction((0,-1)),
+				res.control_p2['down']:	lambda :arrow_p2.set_direction((0,1))
 				}
+
+def game_encounter():
+	# arrow encounter detect and handle
+	if( cal.distance(arrow_p1.position, arrow_p2.position) < res.distance_collision):
+		# pygame.draw.rect(gameDisplay, res.color_obj, [0,0,30,30], 5)
+		if(arrow_p1.direction == arrow_p2.direction):
+			return res.game_brokeback
+		elif(arrow_p1.direction == cal.reverse(arrow_p2.direction)):
+			arrow_p1.set_direction( cal.reverse(arrow_p1.direction) )
+			arrow_p1.position = (arrow_p1.position[0]+arrow_p1.direction[0]*res.distance_collision, 	
+								arrow_p1.position[1]+arrow_p1.direction[1]*res.distance_collision)
+			arrow_p2.set_direction( cal.reverse(arrow_p2.direction) )
+			arrow_p2.position = (arrow_p2.position[0] + arrow_p2.direction[0]*res.distance_collision,
+								arrow_p2.position[1] + arrow_p2.direction[1]*res.distance_collision)
+			return res.game_collision
+		else:
+			return res.game_sidemiss
 
 def game_loop():
 	game_exit = False
@@ -24,19 +48,24 @@ def game_loop():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				game_exit = True
-			# for key in 
+
 			if event.type == pygame.KEYDOWN:
 				for key in key_control:
 					if key == event.key:
 						key_control[key]()
-			print(event)
+			# print(event)
 
 		# progress game
-		arrow.progress()
+		if (game_encounter() == res.game_brokeback):
+			game_exit = True
+		arrow_p1.progress()
+		arrow_p2.progress()
 
 		# render
 		gameDisplay.fill(res.color_background)
-		arrow.draw( gameDisplay )
+
+		arrow_p1.draw( gameDisplay )
+		arrow_p2.draw( gameDisplay )
 
 		pygame.display.update()
 		clock.tick(60)

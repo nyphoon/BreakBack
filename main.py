@@ -2,6 +2,7 @@ import pygame
 import res
 import cal
 from arrow import Arrow
+from game_map import GameMap
 
 pygame.init()
 
@@ -10,6 +11,7 @@ pygame.display.set_caption( res.text_caption )
 pygame.display.set_icon( res.surface_icon )
 clock = pygame.time.Clock()
 
+game_map = GameMap(res.position_game_map, res.size_game_map, res.size_grid, res.game_map_wall)
 arrow_p1 = Arrow(res.size_grid, (50,50), (1,0), 3, res.color_p1)
 arrow_p2 = Arrow(res.size_grid, (50,50), (0,1), 1, res.color_p2)
 
@@ -63,7 +65,7 @@ def game_loop():
 
 		# render
 		gameDisplay.fill(res.color_background)
-
+		game_map.draw( gameDisplay )
 		arrow_p1.draw( gameDisplay )
 		arrow_p2.draw( gameDisplay )
 

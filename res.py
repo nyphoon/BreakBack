@@ -6,8 +6,13 @@ import cal
 dir_res = 'res'
 name_icon = 'brokeback.png'
 
-size_display = (800, 600)
-size_grid = (50, 50)
+size_display = (1280, 720)
+size_game_map = (960, 720)
+size_grid = (40, 40)
+
+position_game_map = (160, 0)
+
+game_map_wall = ()
 
 distance_collision = size_grid[0]/2
 
@@ -18,6 +23,8 @@ color_background = (30, 30, 30)
 color_obj = (123, 123, 222)
 color_p1 = (100, 100, 250)
 color_p2 = (250, 100, 100)
+color_map = (10, 10, 10)
+color_wall = (200, 200, 200)
 
 unit_len = 1
 def unit(num):

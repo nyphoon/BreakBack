@@ -1,5 +1,4 @@
 import pygame
-import res
 import kit
 
 class Arrow (object):

@@ -2,7 +2,7 @@ import pygame
 import res
 import cal
 from arrow import Arrow
-from game_map import GameMap
+import game_map
 
 pygame.init()
 
@@ -11,30 +11,30 @@ pygame.display.set_caption( res.text_caption )
 pygame.display.set_icon( res.surface_icon )
 clock = pygame.time.Clock()
 
-game_map = GameMap(res.position_game_map, res.size_game_map, res.color_map,
+play_map = game_map.GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = Arrow(res.size_arrow, game_map.grid_center((0,0)), (1,0), 3, res.color_p1)
-arrow_p2 = Arrow(res.size_arrow, game_map.grid_center((23,0)), (-1,0), 1, res.color_p2)
+arrow_p1 = Arrow(res.size_arrow, play_map.grid_center((0,0)), (1,0), 3, res.color_p1)
+arrow_p2 = Arrow(res.size_arrow, play_map.grid_center((23,0)), (-1,0), 1, res.color_p2)
 
 # register key done event
-key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, game_map, (1,0)),
-				res.control_p1['left']:	lambda :game_map_turn_correct(arrow_p1, game_map, (-1,0)),
-				res.control_p1['up']:	lambda :game_map_turn_correct(arrow_p1, game_map, (0,-1)),
-				res.control_p1['down']:	lambda :game_map_turn_correct(arrow_p1, game_map, (0,1)),
-				res.control_p2['right']:lambda :game_map_turn_correct(arrow_p2, game_map, (1,0)),
-				res.control_p2['left']:	lambda :game_map_turn_correct(arrow_p2, game_map, (-1,0)),
-				res.control_p2['up']:	lambda :game_map_turn_correct(arrow_p2, game_map, (0,-1)),
-				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, game_map, (0,1))
+key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, play_map, (1,0)),
+				res.control_p1['left']:	lambda :game_map_turn_correct(arrow_p1, play_map, (-1,0)),
+				res.control_p1['up']:	lambda :game_map_turn_correct(arrow_p1, play_map, (0,-1)),
+				res.control_p1['down']:	lambda :game_map_turn_correct(arrow_p1, play_map, (0,1)),
+				res.control_p2['right']:lambda :game_map_turn_correct(arrow_p2, play_map, (1,0)),
+				res.control_p2['left']:	lambda :game_map_turn_correct(arrow_p2, play_map, (-1,0)),
+				res.control_p2['up']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,-1)),
+				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,1))
 				}
 
-def game_map_turn_correct( arrow, game_map, direction ):
+def game_map_turn_correct( arrow, play_map, direction ):
 	arrow.set_direction(direction)
 
-def game_map_dump_correct( arrow, game_map ):
+def game_map_dump_correct( arrow, play_map ):
 	# Is arrow near grid center that need to check current grid bound
-	arrow_grid = game_map.detect_grid( arrow.position )
-	grid_position = game_map.grid_center( arrow_grid )
+	arrow_grid = play_map.detect_grid( arrow.position )
+	grid_position = play_map.grid_center( arrow_grid )
 	if ( cal.distance(arrow.position, grid_position) < res.distance_grid_wall_detect ):
 		# convert vector to wall definition
 		arrow_bump_wall = 0
@@ -50,7 +50,7 @@ def game_map_dump_correct( arrow, game_map ):
 
 		# arrow dumps wall
 		if ( arrow_bump_wall & 
-			game_map.grids[arrow_grid[1]*game_map.map_size[0]+arrow_grid[0]]  != 0 ):
+			play_map.grids[arrow_grid[1]*play_map.map_size[0]+arrow_grid[0]]  != 0 ):
 			arrow.set_position( grid_position )
 
 
@@ -90,14 +90,14 @@ def game_loop():
 			game_exit = True
 
 		arrow_p1.progress()
-		game_map_dump_correct( arrow_p1, game_map )
+		game_map_dump_correct( arrow_p1, play_map )
 
 		arrow_p2.progress()
-		game_map_dump_correct( arrow_p2, game_map )
+		game_map_dump_correct( arrow_p2, play_map )
 
 		# render
 		gameDisplay.fill(res.color_background)
-		game_map.draw( gameDisplay )
+		play_map.draw( gameDisplay )
 		arrow_p1.draw( gameDisplay )
 		arrow_p2.draw( gameDisplay )
 

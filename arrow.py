@@ -25,5 +25,8 @@ class Arrow (object):
 	def draw(self, sur):
 		pygame.draw.polygon(sur, self.color, self.bound_point())
 
+	def set_position(self, position):
+		self.position = position
+
 	def set_direction(self, direction):
 		self.direction = direction

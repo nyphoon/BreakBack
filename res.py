@@ -6,9 +6,14 @@ import cal
 dir_res = 'res'
 name_icon = 'brokeback.png'
 
+text_caption = 'Broke Back'
+
+width_game_map_wall = 4
+
 size_display = (1280, 720)
 size_game_map = (960, 720)
 size_grid = (40, 40)
+size_arrow = (size_grid[0]-2*width_game_map_wall, size_grid[1]-2*width_game_map_wall)
 
 position_game_map = (160, 0)
 # position_start_p1 =
@@ -32,12 +37,10 @@ game_map_grids = (12,	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4, 6,
 					8,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 2,
 					8,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 2,
 					9,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 3)
-width_game_map_wall = 4
 
 distance_collision = size_grid[0]/2
-
-text_caption = 'Broke Back'
-
+distance_grid_wall_detect = size_grid[0]/10
+distance_grid_turn = size_grid[0]/4
 
 color_background = (30, 30, 30)
 color_obj = (123, 123, 222)

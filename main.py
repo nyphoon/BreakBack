@@ -14,21 +14,47 @@ clock = pygame.time.Clock()
 game_map = GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = Arrow(res.size_grid, (50,50), (1,0), 3, res.color_p1)
-arrow_p2 = Arrow(res.size_grid, (50,50), (0,1), 1, res.color_p2)
+arrow_p1 = Arrow(res.size_arrow, game_map.grid_center((0,0)), (1,0), 3, res.color_p1)
+arrow_p2 = Arrow(res.size_arrow, game_map.grid_center((23,0)), (-1,0), 1, res.color_p2)
 
 # register key done event
-key_control = { res.control_p1['right']:lambda :arrow_p1.set_direction((1,0)),
-				res.control_p1['left']:	lambda :arrow_p1.set_direction((-1,0)),
-				res.control_p1['up']:	lambda :arrow_p1.set_direction((0,-1)),
-				res.control_p1['down']:	lambda :arrow_p1.set_direction((0,1)),
-				res.control_p2['right']:lambda :arrow_p2.set_direction((1,0)),
-				res.control_p2['left']:	lambda :arrow_p2.set_direction((-1,0)),
-				res.control_p2['up']:	lambda :arrow_p2.set_direction((0,-1)),
-				res.control_p2['down']:	lambda :arrow_p2.set_direction((0,1))
+key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, game_map, (1,0)),
+				res.control_p1['left']:	lambda :game_map_turn_correct(arrow_p1, game_map, (-1,0)),
+				res.control_p1['up']:	lambda :game_map_turn_correct(arrow_p1, game_map, (0,-1)),
+				res.control_p1['down']:	lambda :game_map_turn_correct(arrow_p1, game_map, (0,1)),
+				res.control_p2['right']:lambda :game_map_turn_correct(arrow_p2, game_map, (1,0)),
+				res.control_p2['left']:	lambda :game_map_turn_correct(arrow_p2, game_map, (-1,0)),
+				res.control_p2['up']:	lambda :game_map_turn_correct(arrow_p2, game_map, (0,-1)),
+				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, game_map, (0,1))
 				}
 
-def game_encounter():
+def game_map_turn_correct( arrow, game_map, direction ):
+	arrow.set_direction(direction)
+
+def game_map_dump_correct( arrow, game_map ):
+	# Is arrow near grid center that need to check current grid bound
+	arrow_grid = game_map.detect_grid( arrow.position )
+	grid_position = game_map.grid_center( arrow_grid )
+	if ( cal.distance(arrow.position, grid_position) < res.distance_grid_wall_detect ):
+		# convert vector to wall definition
+		arrow_bump_wall = 0
+		if (arrow.direction[0] == 0):
+			if (arrow.direction[1] > 0):
+				arrow_bump_wall = 1
+			else:
+				arrow_bump_wall = 4
+		elif (arrow.direction[0] > 0):
+			arrow_bump_wall = 2
+		else:
+			arrow_bump_wall = 8
+
+		# arrow dumps wall
+		if ( arrow_bump_wall & 
+			game_map.grids[arrow_grid[1]*game_map.map_size[0]+arrow_grid[0]]  != 0 ):
+			arrow.set_position( grid_position )
+
+
+def game_arrow_encounter():
 	# arrow encounter detect and handle
 	if( cal.distance(arrow_p1.position, arrow_p2.position) < res.distance_collision):
 		# pygame.draw.rect(gameDisplay, res.color_obj, [0,0,30,30], 5)
@@ -60,10 +86,14 @@ def game_loop():
 			# print(event)
 
 		# progress game
-		if (game_encounter() == res.game_brokeback):
+		if (game_arrow_encounter() == res.game_brokeback):
 			game_exit = True
+
 		arrow_p1.progress()
+		game_map_dump_correct( arrow_p1, game_map )
+
 		arrow_p2.progress()
+		game_map_dump_correct( arrow_p2, game_map )
 
 		# render
 		gameDisplay.fill(res.color_background)

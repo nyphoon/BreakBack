@@ -16,6 +16,9 @@ class GameMap(object):
 		return ( self.position[0] + int((map_position[0]+0.5)*self.grid_size[0]),
 		 self.position[1] + int((map_position[1]+0.5)*self.grid_size[1]) ) 
 
+	def detect_grid(self, position):
+		return (int((position[0]-self.position[0])/self.grid_size[0]),
+		 int((position[1]-self.position[1])/self.grid_size[1])) 
  
 	def draw_grid(self, sur, grid_position, grid_size, grid):
 		### graw wall
@@ -41,6 +44,7 @@ class GameMap(object):
 		for i in range(len(self.grids)):
 			# grid center for debugging
 			pygame.draw.circle(sur, self.color_wall, self.grid_center( (int(i%self.map_size[0]), int(i/self.map_size[0])) ), 2) 
-			self.draw_grid(sur, ( int(i%self.map_size[0])*self.grid_size[0]+self.position[0], int(i/self.map_size[0])*self.grid_size[1]+self.position[1] ),
-							 self.grid_size, 
-							 self.grids[i])
+			self.draw_grid(sur, 
+				( int(i%self.map_size[0])*self.grid_size[0]+self.position[0], int(i/self.map_size[0])*self.grid_size[1]+self.position[1] ), 
+				self.grid_size, 
+				 self.grids[i])

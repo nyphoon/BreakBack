@@ -29,7 +29,15 @@ key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, 
 				}
 
 def game_map_turn_correct( arrow, play_map, direction ):
-	arrow.set_direction(direction)
+	# Is arrow near grid center that need to check current grid bound
+	arrow_grid = play_map.detect_grid( arrow.position )
+	grid_position = play_map.grid_center( arrow_grid )
+	if ( cal.distance(arrow.position, grid_position) < res.distance_grid_turn ):
+		if ( direction!=arrow.direction and direction!=cal.reverse(arrow.direction) ):
+			if ( game_map.direction_to_wall(direction) &
+			play_map.grids[arrow_grid[1]*play_map.map_size[0]+arrow_grid[0]] == 0):
+				arrow.set_direction( direction )
+				arrow.set_position( grid_position )
 
 def game_map_dump_correct( arrow, play_map ):
 	# Is arrow near grid center that need to check current grid bound
@@ -37,20 +45,11 @@ def game_map_dump_correct( arrow, play_map ):
 	grid_position = play_map.grid_center( arrow_grid )
 	if ( cal.distance(arrow.position, grid_position) < res.distance_grid_wall_detect ):
 		# convert vector to wall definition
-		arrow_bump_wall = 0
-		if (arrow.direction[0] == 0):
-			if (arrow.direction[1] > 0):
-				arrow_bump_wall = 1
-			else:
-				arrow_bump_wall = 4
-		elif (arrow.direction[0] > 0):
-			arrow_bump_wall = 2
-		else:
-			arrow_bump_wall = 8
+		arrow_bump_wall = game_map.direction_to_wall( arrow.direction )
 
 		# arrow dumps wall
 		if ( arrow_bump_wall & 
-			play_map.grids[arrow_grid[1]*play_map.map_size[0]+arrow_grid[0]]  != 0 ):
+			play_map.grids[arrow_grid[1]*play_map.map_size[0]+arrow_grid[0]] != 0 ):
 			arrow.set_position( grid_position )
 
 

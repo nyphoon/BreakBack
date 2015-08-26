@@ -1,6 +1,21 @@
 import pygame
 import kit
 
+def direction_to_wall(direction):
+	if (direction[0] == 0):
+		if (direction[1] > 0):
+			# down
+			return 1
+		else:
+			# up
+			return 4
+	elif (direction[0] > 0):
+		# right
+		return 2
+	else:
+		# left
+		return 8
+
 class GameMap(object):
 	def __init__(self, position, size, color_bk, grid_size, grids, width_wall, color_wall):
 		self.position = position

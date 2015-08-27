@@ -1,3 +1,4 @@
+import os
 import pygame
 import res
 import cal
@@ -27,6 +28,29 @@ key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, 
 				res.control_p2['up']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,-1)),
 				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,1))
 				}
+
+font = pygame.font.SysFont("comicsansms", res.fontsize_msg)
+
+
+def scene_start(gameDisplay):
+	# message
+	surface_msg = font.render("Press [space] to start", 1, res.color_msg)
+	size_msg = surface_msg.get_size()
+	# background image
+	surface_start = pygame.image.load( os.path.join(res.dir_res, res.name_start) )
+	# render
+	gameDisplay.fill(res.color_background)
+	gameDisplay.blit(surface_start, (0,0))
+	gameDisplay.blit(surface_msg, 
+				( int((res.size_display[0]-size_msg[0])/2),	int(res.size_display[1]/3*2) ) )
+	pygame.display.update()
+	
+	start = False
+	while not start:
+		for event in pygame.event.get():
+			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+				start = True
+		clock.tick(60)
 
 def game_map_turn_correct( arrow, play_map, direction ):
 	# Is arrow near grid center that need to check current grid bound
@@ -70,7 +94,7 @@ def game_arrow_encounter():
 		else:
 			return res.game_sidemiss
 
-def game_loop():
+def scene_game_loop( gameDisplay ):
 	game_exit = False
 	while not game_exit:
 		# handle event
@@ -103,6 +127,7 @@ def game_loop():
 		pygame.display.update()
 		clock.tick(60)
 
-game_loop()
+scene_start( gameDisplay )
+scene_game_loop( gameDisplay )
 pygame.quit()
 quit()

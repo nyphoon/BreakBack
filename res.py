@@ -5,8 +5,11 @@ import cal
 
 dir_res = 'res'
 name_icon = 'brokeback.png'
+name_start = 'start.png'
 
 text_caption = 'Broke Back'
+
+fontsize_msg = 32
 
 width_game_map_wall = 4
 
@@ -38,16 +41,21 @@ game_map_grids = (12,	4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4, 6,
 					8,	0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, 2,
 					9,	1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1, 3)
 
+speed_max = 10
+
 distance_collision = size_grid[0]/2
-distance_grid_wall_detect = size_grid[0]/10
+# speed should not bigger than this, or arrow will escape
+distance_grid_wall_detect = speed_max
 distance_grid_turn = size_grid[0]/4
 
 color_background = (30, 30, 30)
+color_msg = (222,222,222)
 color_obj = (123, 123, 222)
 color_p1 = (100, 100, 250)
 color_p2 = (250, 100, 100)
 color_map = (10, 10, 10)
 color_wall = (100, 250, 100)
+
 
 unit_len = 1
 def unit(num):

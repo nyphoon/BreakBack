@@ -2,7 +2,7 @@ import os
 import pygame
 import res
 import cal
-from arrow import Arrow
+import arrow
 import game_map
 
 pygame.init()
@@ -15,8 +15,8 @@ clock = pygame.time.Clock()
 play_map = game_map.GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 3, res.color_p1)
-arrow_p2 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 1, res.color_p2)
+arrow_p1 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 3, res.color_p1)
+arrow_p2 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 1, res.color_p2)
 
 # register key done event
 key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, play_map, (1,0)),
@@ -31,6 +31,9 @@ key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, 
 
 font = pygame.font.SysFont("comicsansms", res.fontsize_msg)
 
+play_map.kit_reset( res.kit_max, res.kit_freq )
+play_map.kit_gen()
+play_map.kit_gen()
 
 def scene_start(gameDisplay):
 	# message
@@ -50,7 +53,7 @@ def scene_start(gameDisplay):
 		for event in pygame.event.get():
 			if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
 				start = True
-		clock.tick(60)
+		clock.tick( res.tick_game )
 
 def game_map_turn_correct( arrow, play_map, direction ):
 	# Is arrow near grid center that need to check current grid bound
@@ -112,6 +115,8 @@ def scene_game_loop( gameDisplay ):
 		if (game_arrow_encounter() == res.game_brokeback):
 			game_exit = True
 
+		play_map.kit_progress()
+
 		arrow_p1.progress()
 		game_map_dump_correct( arrow_p1, play_map )
 
@@ -125,7 +130,7 @@ def scene_game_loop( gameDisplay ):
 		arrow_p2.draw( gameDisplay )
 
 		pygame.display.update()
-		clock.tick(60)
+		clock.tick( res.tick_game )
 
 scene_start( gameDisplay )
 scene_game_loop( gameDisplay )

@@ -10,6 +10,8 @@ name_icon_speedup = 'kit_speedup.png'
 name_icon_reverse = 'kit_reverse.png'
 text_caption = 'Broke Back'
 
+tick_game = 60
+
 fontsize_msg = 32
 
 width_game_map_wall = 4
@@ -18,7 +20,7 @@ size_display = (1280, 720)
 size_game_map = (960, 720)
 size_grid = (60, 60) # 16x12 (960/60,720/60) grids will be created
 size_arrow = (size_grid[0]-2*width_game_map_wall, size_grid[1]-2*width_game_map_wall)
-size_kit = (size_grid[0]-2*width_game_map_wall, size_grid[1]-2*width_game_map_wall)
+size_kit = ( size_grid[0]-5*width_game_map_wall, size_grid[1]-5*width_game_map_wall )
 
 grid_position_start_p1 = (0,0)
 grid_position_start_p2 = (15, 0)
@@ -71,6 +73,10 @@ color_wall = (100, 250, 100)
 unit_len = 1
 def unit(num):
 	return unit_len * num
+
+# Configuration of generating kit in game_map
+kit_freq = tick_game*3
+kit_max = 7
 
 # enum game event
 game_brokeback = 1

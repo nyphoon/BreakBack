@@ -5,6 +5,12 @@ import cal
 import arrow
 import game_map
 
+class ArrowInGame(object):
+	def __init__( self, arrow ):
+		self.arrow = arrow
+	def set_grid_position( self, current_position ):
+		self.current_grid_position = current_position
+
 pygame.init()
 
 gameDisplay = pygame.display.set_mode( res.size_display )
@@ -15,8 +21,14 @@ clock = pygame.time.Clock()
 play_map = game_map.GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 21, res.color_p1)
+arrow_p1 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 3, res.color_p1)
 arrow_p2 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 1, res.color_p2)
+
+gameArrowList = []
+gameArrowList.append( ArrowInGame(arrow_p1) )
+gameArrowList.append( ArrowInGame(arrow_p2) )
+for gameArrow in gameArrowList:
+	gameArrow.set_grid_position( play_map.detect_grid(gameArrow.arrow.position) )
 
 # register key done event
 key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, play_map, (1,0)),
@@ -79,6 +91,20 @@ def game_map_bump_correct( arrow, play_map ):
 			play_map.grids[arrow_grid[1]*play_map.map_size[0]+arrow_grid[0]] != 0 ):
 			arrow.set_position( grid_position )
 
+def game_arrow_map_event( arrow_list, play_map ):
+	for gameArrow in arrow_list:
+		current_grid_position = play_map.detect_grid( gameArrow.arrow.position )
+		# check if arrow moves to another grid
+		if (gameArrow.current_grid_position != current_grid_position):
+			# check if there is something should happen as arrow enters this grid
+			# get a kit?
+			for kitinmap in list(play_map.kit_list):
+				if ( kitinmap.grid_position == current_grid_position ):
+					gameArrow.arrow.kit_save( kitinmap.kit )
+					play_map.kit_list.remove( kitinmap )
+
+			gameArrow.set_grid_position( current_grid_position )
+
 
 def game_arrow_encounter():
 	# arrow encounter detect and handle
@@ -111,10 +137,12 @@ def scene_game_loop( gameDisplay ):
 						key_control[key]()
 			# print(event)
 
-		# progress game
+		# raise game event
 		if (game_arrow_encounter() == res.game_brokeback):
 			game_exit = True
+		game_arrow_map_event( gameArrowList, play_map )
 
+		# progress game
 		play_map.kit_progress()
 
 		arrow_p1.progress()
@@ -128,8 +156,8 @@ def scene_game_loop( gameDisplay ):
 		play_map.draw( gameDisplay )
 		arrow_p1.draw( gameDisplay )
 		arrow_p2.draw( gameDisplay )
-
 		pygame.display.update()
+
 		clock.tick( res.tick_game )
 
 scene_start( gameDisplay )

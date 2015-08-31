@@ -33,3 +33,11 @@ class Arrow (object):
 
 	def set_direction(self, direction):
 		self.direction = direction
+
+	# kit control
+	def kit_save(self, kit):
+		self.kits.append( kit )
+
+	def kit_invoke(self):
+		# to do
+		pass

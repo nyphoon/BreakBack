@@ -15,7 +15,7 @@ clock = pygame.time.Clock()
 play_map = game_map.GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 3, res.color_p1)
+arrow_p1 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 21, res.color_p1)
 arrow_p2 = arrow.Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 1, res.color_p2)
 
 # register key done event
@@ -66,11 +66,11 @@ def game_map_turn_correct( arrow, play_map, direction ):
 				arrow.set_direction( direction )
 				arrow.set_position( grid_position )
 
-def game_map_dump_correct( arrow, play_map ):
+def game_map_bump_correct( arrow, play_map ):
 	# Is arrow near grid center that need to check current grid bound
 	arrow_grid = play_map.detect_grid( arrow.position )
 	grid_position = play_map.grid_center( arrow_grid )
-	if ( cal.distance(arrow.position, grid_position) < res.distance_grid_wall_detect ):
+	if ( cal.unit( cal.vector( grid_position, arrow.position ) ) == arrow.direction ):
 		# convert vector to wall definition
 		arrow_bump_wall = game_map.direction_to_wall( arrow.direction )
 
@@ -118,10 +118,10 @@ def scene_game_loop( gameDisplay ):
 		play_map.kit_progress()
 
 		arrow_p1.progress()
-		game_map_dump_correct( arrow_p1, play_map )
+		game_map_bump_correct( arrow_p1, play_map )
 
 		arrow_p2.progress()
-		game_map_dump_correct( arrow_p2, play_map )
+		game_map_bump_correct( arrow_p2, play_map )
 
 		# render
 		gameDisplay.fill(res.color_background)

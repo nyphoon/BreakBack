@@ -5,6 +5,7 @@ import cal
 import game_map
 from arrow import Arrow
 from game_map import GameMap
+from player_panel import PowerBar
 from player_panel import PlayerPanel
 
 class ArrowInGame(object):
@@ -23,8 +24,8 @@ clock = pygame.time.Clock()
 play_map = GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 2, res.color_p1)
-arrow_p2 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 2, res.color_p2)
+arrow_p1 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 2, res.speed_max, res.color_p1)
+arrow_p2 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 2, res.speed_max, res.color_p2)
 
 gameArrowList = []
 gameArrowList.append( ArrowInGame(arrow_p1) )
@@ -32,12 +33,18 @@ gameArrowList.append( ArrowInGame(arrow_p2) )
 for gameArrow in gameArrowList:
 	gameArrow.set_grid_position( play_map.detect_grid(gameArrow.arrow.position) )
 
+bar_p1 = PowerBar( res.position_panel_p1+res.size_panel_p1, res.speed_max, res.color_p1, (0,0,0) )
+bar_p2 = PowerBar( res.position_panel_p2+res.size_panel_p2, res.speed_max, res.color_p2, (0,0,0) )
+
 panel_p1 = PlayerPanel( res.position_panel_p1, res.size_panel_p1, res.color_p1 )
 panel_p1.set_item_slot( res.slot_layout )
 panel_p1.set_player( arrow_p1 )
+panel_p1.set_power_bar( bar_p1 )
+
 panel_p2 = PlayerPanel( res.position_panel_p2, res.size_panel_p2, res.color_p2 )
 panel_p2.set_item_slot( res.slot_layout )
 panel_p2.set_player( arrow_p2 )
+panel_p2.set_power_bar( bar_p2 )
 
 # register key done event
 key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, play_map, (1,0)),

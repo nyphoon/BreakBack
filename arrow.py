@@ -41,5 +41,6 @@ class Arrow (object):
 		self.kits.append( kit )
 
 	def kit_invoke(self):
-		self.kits[0].invoke(self)
-		self.kits = self.kits[1:]
+		if self.kits:
+			self.kits[0].invoke(self)
+			self.kits = self.kits[1:]

@@ -94,5 +94,5 @@ surface_icon_reverse = pygame.image.load( os.path.join(dir_res, name_icon_revers
 
 # p1 and p2 's panel size is the same. use same local layout
 slot_layout = ( (size_panel_p1[0]/3,100,50,50), (size_panel_p1[0]/3,200,50,50), (size_panel_p1[0]/3,300,50,50) )
-control_p1 = { 'left':pygame.K_a, 'right':pygame.K_d, 'up':pygame.K_w, 'down':pygame.K_s, 'kit':pygame.K_LSHIFT}
-control_p2 = { 'left':pygame.K_LEFT, 'right':pygame.K_RIGHT, 'up':pygame.K_UP, 'down':pygame.K_DOWN, 'kit':pygame.K_RSHIFT}
+control_p1 = { 'left':pygame.K_a, 'right':pygame.K_d, 'up':pygame.K_w, 'down':pygame.K_s, 'kit':pygame.K_LCTRL}
+control_p2 = { 'left':pygame.K_LEFT, 'right':pygame.K_RIGHT, 'up':pygame.K_UP, 'down':pygame.K_DOWN, 'kit':pygame.K_RCTRL}

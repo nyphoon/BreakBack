@@ -23,8 +23,8 @@ clock = pygame.time.Clock()
 play_map = GameMap(res.position_game_map, res.size_game_map, res.color_map,
 					 res.size_grid, res.game_map_grids, 
 					 res.width_game_map_wall, res.color_wall)
-arrow_p1 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 3, res.color_p1)
-arrow_p2 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 1, res.color_p2)
+arrow_p1 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p1), (1,0), 2, res.color_p1)
+arrow_p2 = Arrow(res.size_arrow, play_map.grid_center(res.grid_position_start_p2), (-1,0), 2, res.color_p2)
 
 gameArrowList = []
 gameArrowList.append( ArrowInGame(arrow_p1) )
@@ -44,10 +44,12 @@ key_control = { res.control_p1['right']:lambda :game_map_turn_correct(arrow_p1, 
 				res.control_p1['left']:	lambda :game_map_turn_correct(arrow_p1, play_map, (-1,0)),
 				res.control_p1['up']:	lambda :game_map_turn_correct(arrow_p1, play_map, (0,-1)),
 				res.control_p1['down']:	lambda :game_map_turn_correct(arrow_p1, play_map, (0,1)),
+				res.control_p1['kit']:	lambda :arrow_p1.kit_invoke(),
 				res.control_p2['right']:lambda :game_map_turn_correct(arrow_p2, play_map, (1,0)),
 				res.control_p2['left']:	lambda :game_map_turn_correct(arrow_p2, play_map, (-1,0)),
 				res.control_p2['up']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,-1)),
-				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,1))
+				res.control_p2['down']:	lambda :game_map_turn_correct(arrow_p2, play_map, (0,1)),
+				res.control_p2['kit']:	lambda :arrow_p2.kit_invoke()
 				}
 
 font = pygame.font.SysFont("comicsansms", res.fontsize_msg)

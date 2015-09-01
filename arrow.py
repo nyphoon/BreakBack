@@ -39,5 +39,5 @@ class Arrow (object):
 		self.kits.append( kit )
 
 	def kit_invoke(self):
-		# to do
-		pass
+		self.kits[0].invoke(self)
+		self.kits = self.kits[1:]

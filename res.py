@@ -18,6 +18,8 @@ width_game_map_wall = 4
 
 size_display = (1280, 720)
 size_game_map = (960, 720)
+size_panel_p1 = (150, 720)
+size_panel_p2 = (150, 720)
 size_grid = (60, 60) # 16x12 (960/60,720/60) grids will be created
 size_arrow = (size_grid[0]-2*width_game_map_wall, size_grid[1]-2*width_game_map_wall)
 size_kit = ( size_grid[0]-5*width_game_map_wall, size_grid[1]-5*width_game_map_wall )
@@ -26,7 +28,8 @@ grid_position_start_p1 = (0,0)
 grid_position_start_p2 = (15, 0)
 
 position_game_map = (160, 0)
-
+position_panel_p1 = (0, 0)
+position_panel_p2 = (size_display[0]-150, 0)
 
 game_map_grids = (	12,	5,	5,	4,	5,	5,	4,	5,	5,	4,	5,	5,	4,	5,	5,	6,
 					10,	12,	5,	2,	15,	15,	10,	12,	6,	10,	15,	15,	8,	5,	6,	10,
@@ -89,5 +92,7 @@ surface_icon = pygame.image.load( os.path.join(dir_res, name_icon) )
 surface_icon_speedup = pygame.image.load( os.path.join(dir_res, name_icon_speedup) )
 surface_icon_reverse = pygame.image.load( os.path.join(dir_res, name_icon_reverse) )
 
+# p1 and p2 's panel size is the same. use same local layout
+slot_layout = ( (size_panel_p1[0]/3,100,50,50), (size_panel_p1[0]/3,200,50,50), (size_panel_p1[0]/3,300,50,50) )
 control_p1 = { 'left':pygame.K_a, 'right':pygame.K_d, 'up':pygame.K_w, 'down':pygame.K_s, 'kit':pygame.K_LSHIFT}
 control_p2 = { 'left':pygame.K_LEFT, 'right':pygame.K_RIGHT, 'up':pygame.K_UP, 'down':pygame.K_DOWN, 'kit':pygame.K_RSHIFT}

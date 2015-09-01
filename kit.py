@@ -12,12 +12,12 @@ class KitBase( object ):
 
 class KitSpeedUp( KitBase ):
 	def __init__(self):
-		super().__init__(res.surface_icon_speedup, res.size_kit)
+		super(KitSpeedUp, self).__init__(res.surface_icon_speedup, res.size_kit)
 	def invoke(self, arrow):
 		arrow.set_speed( arrow.speed + 1 )
 
 class KitReverse( KitBase ):
 	def __init__(self):
-		super().__init__(res.surface_icon_reverse, res.size_kit)
+		super(KitReverse, self).__init__(res.surface_icon_reverse, res.size_kit)
 	def invoke(self, arrow):
 		arrow.set_direction( cal.reverse(arrow.direction) )

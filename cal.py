@@ -16,6 +16,9 @@ def unit( vector ):
 		return ( 0, 0 )
 	return  ( vector[0]/l, vector[1]/l )
 
+def dot( u, v ):
+	return u[0]*v[1]+u[1]*v[0]
+
 # point calculation
 # a to b
 def vector(a, b):

@@ -84,7 +84,7 @@ kit_max = 7
 # enum game event
 game_brokeback = 1
 game_collision = 2
-game_sidemiss = 3
+game_side_collision = 3
 
 
 # pygame var

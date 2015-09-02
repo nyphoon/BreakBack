@@ -139,7 +139,13 @@ def game_arrow_encounter():
 								arrow_p2.position[1] + arrow_p2.direction[1]*res.distance_collision)
 			return res.game_collision
 		else:
-			return res.game_sidemiss
+			# if p1 bumps p2
+			if ( arrow_p1.direction == cal.unit( cal.vector(arrow_p1.position, arrow_p2.position) ) ):
+				arrow_p1.set_direction( cal.reverse(arrow_p1.direction) )
+			else:
+				arrow_p2.set_direction( cal.reverse(arrow_p2.direction) )
+				
+			return res.game_side_collision
 
 def scene_game_loop( gameDisplay ):
 	game_exit = False

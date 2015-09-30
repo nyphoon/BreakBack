@@ -1,6 +1,5 @@
 import pygame
 import os
-
 import cal
 
 dir_res = 'res'
@@ -11,8 +10,11 @@ name_icon_reverse = 'kit_reverse.png'
 text_caption = 'Broke Back'
 
 tick_game = 60
+clock = pygame.time.Clock()
 
 fontsize_msg = 32
+pygame.font.init()
+font_msg = pygame.font.SysFont("comicsansms", fontsize_msg)
 
 width_game_map_wall = 4
 
